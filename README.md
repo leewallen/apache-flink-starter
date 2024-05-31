@@ -15,7 +15,7 @@ A starting point for an [Apache Flink](https://ci.apache.org/projects/flink/flin
 Let's first clone the repo and fire up our system,
 
 ```
-git clone git@github.com:aedenj/apache-flink-starter.git ~/projects/apache-flink-starter
+git clone git@github.com:leewallen/apache-flink-starter.git ~/projects/apache-flink-starter
 cd ~/projects/apache-flink-starter;./gradlew kafkaUp
 ```
 Now you have a single node Kafka cluster with various admin tools to make life a little easier. See the [Kafka cluster repo](https://github.com/aedenj/kafka-cluster-starter) for its operating details.
@@ -50,14 +50,6 @@ After starting the job with one of the methods above, let's observe it reading a
 
 You should see the message `1:{ message: "Hello World!" }` in both topics.
 
-
-### Live Reload
-
-Live reload is a great feature to have in your development loop as it can save you time. The closest I've come to on this is the command `./gradlew -t shadowJar startJob`. This approach attempts to simulate live reload using Gradle's `-t` flag by restarting the containers of the Flink job cluster in `flink-job-cluster.yml`.
-
-Another approach I've explored is using [JRebel](https://manuals.jrebel.com/jrebel/standalone/index.html), which can make classes reloadable with existing class loaders. Only changed classes are recompiled and instantly reloaded in the running application. JRebel will not re-run `main` for you so I've had mixed results with its effectiveness.
-
-If you've found a better way, please drop me an email.
 
 ## Grafana, Elastic Search and Logstash
 

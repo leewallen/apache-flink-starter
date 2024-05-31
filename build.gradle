@@ -13,6 +13,7 @@ plugins {
 
     // http://xvik.github.io/gradle-quality-plugin/4.3.0/getting-started/
     id 'ru.vyarus.quality' version '4.7.0' // no config out of the box
+    
 }
 
 
@@ -34,10 +35,10 @@ ext {
     javaVersion = '1.11'
     junitVersion = '5.8.2'
     assertjVersion = '3.20.2'
-    flinkVersion = '1.14.2'
-    scalaVersion = '2.11'
+    flinkVersion = '1.18.1'
     slf4jVersion = '1.7.32'
     log4jVersion = '2.17.0'
+    kafkaConnectorVersion = '3.1.0-1.18'
 }
 
 task kafkaUp(type: Exec) {
@@ -125,11 +126,13 @@ dependencies {
     // connectors. These must be in the flinkShadowJar configuration!
     // --------------------------------------------------------------
     // Core
-    implementation "org.apache.flink:flink-streaming-java_${scalaVersion}:${flinkVersion}"
-    implementation "org.apache.flink:flink-runtime-web_${scalaVersion}:${flinkVersion}"
+    implementation "org.apache.flink:flink-streaming-java:${flinkVersion}"
+    implementation "org.apache.flink:flink-runtime-web:${flinkVersion}"
+    implementation "org.apache.flink:flink-connector-kafka:${kafkaConnectorVersion}"
+    implementation "org.apache.flink:flink-connector-base:${flinkVersion}"
 
     // Connectors & Formats
-    implementation group: 'org.apache.flink', name: "flink-connector-kafka_${scalaVersion}", version: "${flinkVersion}"
+    implementation group: 'org.apache.flink', name: "flink-connector-kafka", version: "${flinkVersion}"
 
     // Logging
     implementation "org.apache.logging.log4j:log4j-api:${log4jVersion}"
@@ -144,7 +147,8 @@ dependencies {
     // -----------------------------------------------------------------
     // Dependencies that should be part of the shadow jar, e.g connectors.
     // -----------------------------------------------------------------
-    flinkShadowJar "org.apache.flink:flink-connector-kafka_${scalaVersion}:${flinkVersion}"
+    flinkShadowJar "org.apache.flink:flink-connector-kafka:${kafkaConnectorVersion}"
+    flinkShadowJar "org.apache.flink:flink-connector-base:${flinkVersion}"
 
     // Supplementary Libraries
     flinkShadowJar group: 'com.typesafe', name: 'config', version: '1.4.0'
@@ -156,9 +160,9 @@ dependencies {
     testImplementation "org.junit.jupiter:junit-jupiter-api:${junitVersion}"
     testImplementation group: 'org.assertj', name:'assertj-core', version: "${assertjVersion}"
 
-    testImplementation "org.apache.flink:flink-test-utils_${scalaVersion}:${flinkVersion}"
+    testImplementation "org.apache.flink:flink-test-utils:${flinkVersion}"
     testImplementation "org.apache.flink:flink-runtime:${flinkVersion}:tests"
-    testImplementation "org.apache.flink:flink-streaming-java_${scalaVersion}:${flinkVersion}:tests"
+    testImplementation "org.apache.flink:flink-streaming-java:${flinkVersion}:tests"
 }
 
 // make compileOnly dependencies available for tests:

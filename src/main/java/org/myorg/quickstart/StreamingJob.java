@@ -21,6 +21,7 @@ public final class StreamingJob {
     }
 
     public static void main(final String[] args) throws Exception {
+
         final JobConfig config = JobConfig.create();
         final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
@@ -41,7 +42,7 @@ public final class StreamingJob {
                         .setValueSerializationSchema(new SimpleStringSchema())
                         .build()
                 )
-                .setDeliverGuarantee(DeliveryGuarantee.NONE)
+                .setDeliveryGuarantee(DeliveryGuarantee.EXACTLY_ONCE)
                 .setKafkaProducerConfig(config.producer())
                 .build();
 
@@ -49,6 +50,6 @@ public final class StreamingJob {
             .sinkTo(sink)
             .name("Destination Topic");
 
-        env.execute("Kafka Experiment");
+        env.execute("Flink Streaming Java API Skeleton");
     }
 }
