@@ -52,4 +52,4 @@ You should see the message `1:{ message: "Hello World!" }` in both topics.
 
 ### Metrics
 
-Metrics are exposed via Prometheus Metric Reporter and Grafana.
+Metrics are exposed via [Slf4jReporter](https://nightlies.apache.org/flink/flink-docs-release-1.18/docs/deployment/metric_reporters/#slf4j).
