@@ -14,3 +14,12 @@ heartbeat.interval: 1000
 heartbeat.timeout: 5000
 
 parallelism.default: 2
+
+metrics.reporter.slf4j.factory.class: org.apache.flink.metrics.slf4j.Slf4jReporterFactory
+metrics.reporter.slf4j.interval: 60 SECONDS
+
+#metrics.reporter.prom.factory.class: org.apache.flink.metrics.prometheus.PrometheusReporterFactory
+#metrics.reporter.prom.factory.port: 9260
+#metrics.reporters: prom
+#metrics.reporter.prom.class: org.apache.flink.metrics.prometheus.PrometheusReporter
+#metrics.reporter.prom.port: 9260

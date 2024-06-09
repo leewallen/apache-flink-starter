@@ -9,10 +9,11 @@ volumes:
 
 services:
   jobmanager:
-    image: flink:1.14.3-scala_2.11-java11
+    image: flink:1.18.1-java11
     hostname: jobmanager
     ports:
       - "8081:8081"
+      - "9260:9260"
     command: "standalone-job"
     environment:
       JOB_MANAGER_RPC_ADDRESS: jobmanager
@@ -26,7 +27,8 @@ services:
       - kafka-net
 
   taskmanager:
-    image: flink:1.14.2-scala_2.11-java11
+    image: flink:1.18.1-java11
+    hostname: taskmanager
     depends_on:
       - jobmanager
     command: "taskmanager.sh start-foreground"
@@ -40,4 +42,3 @@ services:
       - ../data/flink-savepoints:/tmp/flink-savepoints-directory
     networks:
       - kafka-net
-

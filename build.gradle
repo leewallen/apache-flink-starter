@@ -12,8 +12,8 @@ plugins {
     id 'com.github.johnrengelman.shadow' version '7.1.2'
 
     // http://xvik.github.io/gradle-quality-plugin/4.3.0/getting-started/
-    id 'ru.vyarus.quality' version '4.7.0' // no config out of the box
-    
+    id 'com.diffplug.spotless' version '6.12.0'
+
 }
 
 
@@ -61,14 +61,6 @@ task createTopics(type: Exec) {
   commandLine "./scripts/create-topics.sh", "source", "destination"
 }
 
-task grafanaDown(type: Exec) {
-  commandLine "docker-compose", "-p", "grafana", "-f", "docker/grafana-elastic-logstash.yml", "down"
-}
-
-task grafanaUp(type: Exec) {
-  commandLine "docker-compose", "-p", "grafana", "-f", "docker/grafana-elastic-logstash.yml", "up"
-}
-
 sourceCompatibility = javaVersion
 targetCompatibility = javaVersion
 tasks.withType(JavaCompile) {
@@ -76,9 +68,6 @@ tasks.withType(JavaCompile) {
 }
 
 
-wrapper {
-    gradleVersion = '7.3.3'
-}
 
 // declare where to find the dependencies of your project
 repositories {
@@ -128,11 +117,11 @@ dependencies {
     // Core
     implementation "org.apache.flink:flink-streaming-java:${flinkVersion}"
     implementation "org.apache.flink:flink-runtime-web:${flinkVersion}"
-    implementation "org.apache.flink:flink-connector-kafka:${kafkaConnectorVersion}"
     implementation "org.apache.flink:flink-connector-base:${flinkVersion}"
+    implementation "org.apache.flink:flink-metrics-dropwizard:${flinkVersion}"
 
     // Connectors & Formats
-    implementation group: 'org.apache.flink', name: "flink-connector-kafka", version: "${flinkVersion}"
+    implementation "org.apache.flink:flink-connector-kafka:${kafkaConnectorVersion}"
 
     // Logging
     implementation "org.apache.logging.log4j:log4j-api:${log4jVersion}"
@@ -185,8 +174,16 @@ jar {
     }
 }
 
-shadowJar {
-    baseName 'flink-stream-job'
-    zip64 true
-    configurations = [project.configurations.flinkShadowJar]
+//shadowJar {
+//    baseName 'flink-stream-job'
+//    zip64 true
+//    configurations = [project.configurations.flinkShadowJar]
+//}
+
+// Configure Spotless
+spotless {
+    java {
+        googleJavaFormat() // Use Google's Java format
+        target 'src/**/*.java'
+    }
 }

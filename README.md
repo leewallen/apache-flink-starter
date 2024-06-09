@@ -50,27 +50,6 @@ After starting the job with one of the methods above, let's observe it reading a
 
 You should see the message `1:{ message: "Hello World!" }` in both topics.
 
+### Metrics
 
-## Grafana, Elastic Search and Logstash
-
-This repo also comes with the ability to spin up Grafana, Elastic Search and Logstash that let's you try out the common use case of using Grafana as a visual tool for querying data from Elastic Search. Simply run `./gradlew grafanaUp`. There are additional containers present to support administractive tasks,
-
-1. [Dejavu](https://github.com/appbaseio/dejavu) - Dejavu is a UI for browsing data in Elasticsearch..
-1. [Cerebro](https://github.com/lmenezes/cerebro) - Is a cluster management UI for Elastic Search
-
-Some things to note about the setup,
-
-1. Elasticsearch as already been setup as a [datasource](https://github.com/aedenj/apache-flink-starter/tree/master/conf/grafana/provisioning/datasources) for Grafana.
-1. Logstash has a [basic configuration](https://github.com/aedenj/apache-flink-starter/tree/master/conf/logstash) to read from the Kafka cluster and write to Elasticsearch.
-1. No dashboard has been setup in Grafana.
-
-### Viewing Data with Dejavu
-
-1. Run `./gradlew grafanaUp` if you haven't already.
-1. [Open Dejavu](http://localhost:1358/?appname=&url=&mode=edit)
-1. Enter `http://elasticsearch:9200` into the input box with hint text of `URL for Cluster`.
-1. Enter `*` in the input box with the hint text of `Appname`
-
-### Managing Elastic Search with Cerebro
-
-1. [Open Cerebro](http://localhost:9004/#/overview?host=http:%2F%2Felasticsearch:9200) and give it a spin. It's feature rich.
+Metrics are exposed via Prometheus Metric Reporter and Grafana.

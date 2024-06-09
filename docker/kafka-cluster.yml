@@ -82,7 +82,7 @@ services:
       - kafka-net
 
   kafdrop:
-    image: obsidiandynamics/kafdrop
+    image: obsidiandynamics/kafdrop:3.31.0
     restart: "always"
     ports:
       - "8001:9000"
@@ -125,4 +125,3 @@ services:
     restart: unless-stopped
     networks:
       - kafka-net
-
