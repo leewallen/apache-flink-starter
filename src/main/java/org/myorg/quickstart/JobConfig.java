@@ -42,7 +42,7 @@ final class JobConfig {
     final Properties props = new Properties();
 
     props.setProperty("transaction.timeout.ms", config.getString("kafka.producer.transTimeout"));
-
+    props.setProperty("producer.rate", String.valueOf(config.getInt("kafka.producer.rate")));
     return props;
   }
 }

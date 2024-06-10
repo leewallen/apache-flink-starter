@@ -8,7 +8,6 @@ import org.apache.flink.configuration.Configuration;
 import org.apache.flink.connector.base.DeliveryGuarantee;
 import org.apache.flink.connector.kafka.sink.KafkaRecordSerializationSchema;
 import org.apache.flink.connector.kafka.sink.KafkaSink;
-import org.apache.flink.connector.kafka.source.KafkaSource;
 import org.apache.flink.dropwizard.metrics.DropwizardMeterWrapper;
 import org.apache.flink.metrics.Counter;
 import org.apache.flink.metrics.Meter;
@@ -22,6 +21,7 @@ public final class StreamingJob {
   public static final String SOURCE_TOPIC = "source";
   public static final String SOURCE_ID = "source-source";
   public static final String SOURCE_STREAM = "source-stream";
+  public static final String MAP_FUNCTION = "map";
 
   private StreamingJob() {
     // prevents calls from subclass
@@ -33,13 +33,7 @@ public final class StreamingJob {
     final JobConfig config = JobConfig.create();
     final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
-    final KafkaSource<String> source =
-        KafkaSource.<String>builder()
-            .setBootstrapServers(config.brokers())
-            .setTopics(SOURCE_TOPIC)
-            .setValueOnlyDeserializer(new SimpleStringSchema())
-            .setProperties(config.consumer())
-            .build();
+    var source = SourceFactory.getSource("Kafka", config);
 
     final KafkaSink<String> sink =
         KafkaSink.<String>builder()
@@ -84,8 +78,8 @@ public final class StreamingJob {
                     return value.toUpperCase();
                   }
                 })
-            .name("map")
-            .uid("map");
+            .name(MAP_FUNCTION)
+            .uid(MAP_FUNCTION);
 
     mappedStream.sinkTo(sink).name(DESTINATION_ID).uid(DESTINATION_ID);
 
