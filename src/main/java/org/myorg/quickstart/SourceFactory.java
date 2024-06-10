@@ -14,11 +14,9 @@ public class SourceFactory {
   public static final String SOURCE_ID = "source-source";
   public static final String SOURCE_STREAM = "source-stream";
 
-  public static Source getSource(String sourceType, JobConfig config) {
-    if (sourceType == null) {
-      return null;
-    }
-    if (sourceType.equalsIgnoreCase("Kafka")) {
+  public static Source getSource(JobConfig config) {
+    var producerType = config.producer().getProperty("producer.type");
+    if (producerType == null || producerType.equalsIgnoreCase("Kafka")) {
       return KafkaSource.<String>builder()
           .setBootstrapServers(config.brokers())
           .setTopics(SOURCE_TOPIC)
@@ -26,7 +24,6 @@ public class SourceFactory {
           .setProperties(config.consumer())
           .build();
     } else {
-
       GeneratorFunction<Long, String> generatorFunction =
           index -> {
             Random random = new Random();

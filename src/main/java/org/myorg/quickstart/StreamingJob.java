@@ -33,7 +33,7 @@ public final class StreamingJob {
     final JobConfig config = JobConfig.create();
     final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
-    var source = SourceFactory.getSource("Kafka", config);
+    var source = SourceFactory.getSource(config);
 
     final KafkaSink<String> sink =
         KafkaSink.<String>builder()
