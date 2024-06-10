@@ -13,6 +13,11 @@ state.savepoints.dir: file:///tmp/flink-savepoints-directory
 heartbeat.interval: 1000
 heartbeat.timeout: 5000
 
+rest.flamegraph.enabled: true
+
+execution.checkpointing.interval: 5000
+execution.checkpointing.mode: EXACTLY_ONCE
+
 parallelism.default: 2
 
 metrics.reporter.slf4j.factory.class: org.apache.flink.metrics.slf4j.Slf4jReporterFactory

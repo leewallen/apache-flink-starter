@@ -79,6 +79,8 @@ public final class StreamingJob {
 
                   @Override
                   public String map(String value) {
+                    this.meter.markEvent();
+                    this.counter.inc();
                     return value.toUpperCase();
                   }
                 })
